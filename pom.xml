@@ -2,12 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.1</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>spring-security</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -15,38 +9,59 @@
 	<name>spring-security</name>
 	<description>Demo project for spring security</description>
 	<properties>
-		<java.version>17</java.version>
+		<maven.compiler.source>7</maven.compiler.source>
+		<maven.compiler.target>7</maven.compiler.target>
 	</properties>
+	<!-- pom.xml -->
 	<dependencies>
+		<!-- Spring MVC -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>4.3.13.RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>com.okta.spring</groupId>
-			<artifactId>okta-spring-boot-starter</artifactId>
-			<version>3.0.6</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>4.3.13.RELEASE</version>
 		</dependency>
-
+		<!-- Spring Security -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>4.2.13.RELEASE</version>
+		</dependency> 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>4.2.13.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version> 
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.okta.sdk/okta-sdk-api -->
+		<!--	<dependency>
+			<groupId>com.okta.sdk</groupId>
+			<artifactId>okta-sdk-api</artifactId>
+			<version>8.2.5</version>
+			<type>pom</type>
+		</dependency>-->
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.3.1</version> <!-- Use the latest version available -->
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
