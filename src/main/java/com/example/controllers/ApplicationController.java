@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +28,17 @@ public class ApplicationController {
  @GetMapping("/")
  public String home() {
      return "home";
+ }
+
+ @GetMapping("/login")
+ public String login(){
+        return "login";
+ }
+
+ @PostMapping("/login")
+ public String loginForm(RequestParam params){
+    System.out.println(params);
+    return "hello";
  }
  
  @GetMapping("/hello")

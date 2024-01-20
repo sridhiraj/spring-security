@@ -30,7 +30,9 @@ public class AuthController {
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 
-    @PostMapping("/login")
+
+
+/*    @PostMapping("/login")
     public ResponseEntity<JWTResponse> login(@RequestBody JWTRequest request) {
 
         this.doAuthenticate(request.getEmail(), request.getPassword());
@@ -42,7 +44,7 @@ public class AuthController {
                 .jwtToken(token)
                 .userName(userDetails.getUsername()).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+    }*/
 
     private void doAuthenticate(String email, String password) {
 
