@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 
@@ -54,23 +58,17 @@ public class ApplicationController {
  }
 
  @GetMapping("/authorization-code/callback")
- public String handleCallback(@RequestParam("code") String code) {
-     // Exchange the authorization code for an access token
-     String tokenEndpoint = "https://dev-57158829.okta.com/oauth2/default/v1/token";
-     MultiValueMap<String, String> formData = new LinkedMultiValueMap();
-     formData.add("grant_type", "authorization_code");
-     formData.add("code", code);
-     formData.add("redirect_uri", "http://localhost:8080/spring-security/authorization-code/callback");
-     
-     HttpHeaders headers = new HttpHeaders();
-     headers.set("Authorization", "Bearer " + "0oadvnetpwBnz6XtA5d7" + ":" + "V_bDpFX9sHfQ-KSV-pjNxJk1NLRZQvgiqgg679meeLhiQzfJTu0X6gToCsoW5Xe3"); // Set the Authorization header
-
-     HttpEntity<MultiValueMap<String, String>> request = new HttpEntity(formData, headers);
-
-     ResponseEntity<CustomTokenResponse> response = restTemplate().postForEntity(tokenEndpoint, request, CustomTokenResponse.class);
-
-     // Process the access token (response.getBody().getAccessToken())
-     return "callback";
+ public String handleCallback( @RequestParam(name = "accessToken", required = false) String accessToken,
+                                     Model model) {
+         if (accessToken==null) {
+             model.addAttribute("isUserLoggedIn", "true");
+             return "login";
+         }
+         else {
+             model.addAttribute("userName", "test");
+//             return "home";
+             return "redirect:/home";
+         }
  }
  
  @Bean

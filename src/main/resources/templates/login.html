@@ -1,22 +1,95 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<!doctype html>
+<html>
 <head>
-    <title>Please Log In</title>e
+    <script
+            src="https://global.oktacdn.com/okta-signin-widget/5.8.0/js/okta-sign-in.min.js"></script>
+    <link
+            href="https://global.oktacdn.com/okta-signin-widget/5.8.0/css/okta-sign-in.min.css"
+            type="text/css" rel="stylesheet" />
+
 </head>
+
 <body>
-<h1>Please Log In</h1>
-<div th:if="${param.error}">
-    Invalid username and password.</div>
-<div th:if="${param.logout}">
-    You have been logged out.</div>
-<form th:action="@{/login}" method="post">
-    <div>
-        <input type="text" name="username" placeholder="Username"/>
-    </div>
-    <div>
-        <input type="password" name="password" placeholder="Password"/>
-    </div>
-    <input type="submit" value="Log in" />
-</form>
+<div id ="htmlContent"></div>
+<script>
+    var isUserLoggedIn =  `[[${isUserLoggedIn}]]`;
+    console.log("## isUserLoggedIn ::"+ isUserLoggedIn);
+    const config = {
+              baseUrl : 'https://dev-57158829.okta.com',
+              issuer : 'https://dev-57158829.okta.com/oauth2/default',
+              clientId : '0oaaeq14cbSdlQL7m5d7',
+              redirectUri : 'http://localhost:8080/authorization-code/callback',
+              authParams : {
+                  responseType : [ 'token', 'id_token' ],
+              },
+          };
+
+  const oktaSignIn = new OktaSignIn(config);
+
+  if (isUserLoggedIn) { //get accessToken and pass to the backend.
+      oktaSignIn.authClient.token
+              .getWithoutPrompt({
+                  responseType : [ 'token', 'id_token' ],
+                  scopes : [ 'openid', 'email', 'profile' ],
+              })
+              .then(
+                      function(res) {
+                          console.log("### response ###");
+
+                          console.log(res);
+                          var accessToken = res.tokens.accessToken.accessToken;
+                          localStorage
+                                  .setItem('accessToken', accessToken)
+
+                          var url = "/authorization-code/callback?accessToken="
+                                  + accessToken;
+
+                          var xhr = new XMLHttpRequest();
+
+                          xhr.open("GET", url, true);
+                          xhr.setRequestHeader("Content-Type",
+                                  "text/html");
+
+                          xhr.onreadystatechange = function() {
+                              if (xhr.readyState === 4
+                                      && xhr.status === 200) {
+                                  // Request is complete and successful
+                                  var htmlResponse = xhr.responseText;
+                                  // Insert the HTML content into the designated div
+                                  document.getElementById("htmlContent").innerHTML = htmlResponse;
+                              }
+                          };
+
+                          xhr.send();
+
+                      });
+
+  } else {
+      oktaSignIn.authClient.token.getWithRedirect({
+          responseType : [ 'token', 'id_token' ],
+          tokenManager : {
+              storage : 'localStorage'
+          },
+          scopes : [ 'openid', 'profile', 'email' ],
+      });
+  }
+
+
+
+  function logout(){
+         oktaSignIn.authClient.signOut({ postLogoutRedirectUri: `${window.location.origin}/fem/authenticate` })
+            .then(function() {
+                // Redirect to the Okta logout endpoint
+                 oktaSignIn.authClient.signOut({ postLogoutRedirectUri: `${window.location.origin}/fem/authenticate` })
+
+              })
+              .catch(function(error) {
+                console.error('Error during logout:', error);
+              });
+  }
+
+</script>
 </body>
 </html>
+
+

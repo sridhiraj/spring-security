@@ -21,26 +21,18 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-/*
 		http.csrf(csrf -> csrf.disable())
 				.cors(cors->cors.disable())
 				.authorizeHttpRequests(auth ->
-						auth.requestMatchers("home/**").permitAll()
-							.requestMatchers("/auth/login").permitAll()
-								.requestMatchers("/hello").permitAll()
+						auth.requestMatchers("/home/**").authenticated()
+								.requestMatchers("/authorization-code/callback").permitAll()
+							.requestMatchers("/login").permitAll()
 								.anyRequest().authenticated())
 				.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-*/
 
-		http
-				.authorizeHttpRequests(auth -> auth.requestMatchers("home/**").authenticated())
-				.formLogin(form -> form
-						.loginPage("/login").permitAll()
 
-				);
-
-//		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 }
