@@ -34,16 +34,9 @@ public class ApplicationController {
      return "home";
  }
 
- @GetMapping("/login")
- public String login(){
-        return "login";
- }
 
- @PostMapping("/login")
- public String loginForm(RequestParam params){
-    System.out.println(params);
-    return "hello";
- }
+
+
  
  @GetMapping("/hello")
  public ModelAndView hello() {
@@ -51,12 +44,17 @@ public class ApplicationController {
      mv.setViewName("hello");
      return mv;
  }
- 
+
  @GetMapping("/test")
  public String test() {
      return "test";
  }
 
+
+ @GetMapping("/login")
+    public String login(){
+        return "login";
+ }
  @GetMapping("/authorization-code/callback")
  public String handleCallback( @RequestParam(name = "accessToken", required = false) String accessToken,
                                      Model model) {
@@ -66,8 +64,8 @@ public class ApplicationController {
          }
          else {
              model.addAttribute("userName", "test");
-//             return "home";
-             return "redirect:/home";
+             return "home";
+//             return "redirect:/home";
          }
  }
  

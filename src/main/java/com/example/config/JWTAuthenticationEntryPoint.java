@@ -13,9 +13,11 @@ import java.io.PrintWriter;
 public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+       /* response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         PrintWriter pw = response.getWriter();
-        pw.println("UnAuthorized Access !!");
+        pw.println("UnAuthorized Access !!");*/
+
+        response.sendRedirect("/home/login");
     }
 
 }
